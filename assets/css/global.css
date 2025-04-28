@@ -89,4 +89,13 @@ body{
     border-color: rgb(248, 67, 67);
 }
 
+.pokemon.error {
+    color: white;
+    background-color: rgb(248, 67, 67);
+    padding: 1rem;
+    border-radius: 1rem;
+    text-align: center;
+    font-size: 1rem;
+    margin: 0.5rem;
+}
 

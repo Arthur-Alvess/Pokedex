@@ -1,6 +1,6 @@
 const pokemonList = document.getElementById('pokemonList');
 const loadMore = document.getElementById('loadMore');
-const limit = 20;
+const limit = 10;
 let offset = 0;
 
 let todosOsPokemons = []; 
@@ -23,9 +23,10 @@ function convertPokemonToLI(pokemon) {
 
 function loadPokemonItens(offset, limit) { 
     pokeApi.getPokemons(offset, limit).then((pokemons = []) => {
-        // Armazenando os pokémons carregados na variável global
         todosOsPokemons = [...todosOsPokemons, ...pokemons];
         pokemonList.innerHTML += pokemons.map(convertPokemonToLI).join('');
+    }).catch(error => {
+        console.error('Erro ao carregar pokémons:', error);
     });   
 }
 
@@ -44,10 +45,9 @@ function configurarBusca() {
 
         if (termo === "") {
             pokemonList.innerHTML = todosOsPokemons.map(convertPokemonToLI).join('');
-            loadMore.style.display = 'block'
+            loadMore.style.display = 'block'; 
         } else {
-
-            loadMore.style.display = 'none'
+            loadMore.style.display = 'none';
 
             const itensFiltrados = todosOsPokemons.filter(pokemon =>
                 pokemon.name.toLowerCase().includes(termo)
@@ -58,11 +58,16 @@ function configurarBusca() {
             } else {
                 pokeApi.getPokemonDetail({ url: `https://pokeapi.co/api/v2/pokemon/${termo}` })
                     .then(pokemon => {
-                        todosOsPokemons.push(pokemon);
-                        pokemonList.innerHTML = todosOsPokemons.map(convertPokemonToLI).join('');
+                        if (pokemon && pokemon.name) {
+                            todosOsPokemons.push(pokemon);
+                            pokemonList.innerHTML = todosOsPokemons.map(convertPokemonToLI).join('');
+                        } else {
+                            pokemonList.innerHTML = '<li class="pokemon error">Pokémon não encontrado!</li>';
+                        }
                     })
                     .catch(error => {
-                        console.log(`Pokémon não encontrado: ${termo}`, error);
+                        console.error('Erro ao buscar Pokémon na API:', error);
+                        pokemonList.innerHTML = '<li class="pokemon error">Pokémon não encontrado!</li>';
                     });
             }
         }
