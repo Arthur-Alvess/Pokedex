@@ -1,6 +1,6 @@
 const pokemonList = document.getElementById('pokemonList');
 const loadMore = document.getElementById('loadMore');
-const limit = 10;
+const limit = 20;
 let offset = 0;
 
 let todosOsPokemons = []; 
