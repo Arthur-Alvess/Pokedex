@@ -44,7 +44,11 @@ function configurarBusca() {
 
         if (termo === "") {
             pokemonList.innerHTML = todosOsPokemons.map(convertPokemonToLI).join('');
+            loadMore.style.display = 'block'
         } else {
+
+            loadMore.style.display = 'none'
+
             const itensFiltrados = todosOsPokemons.filter(pokemon =>
                 pokemon.name.toLowerCase().includes(termo)
             );
